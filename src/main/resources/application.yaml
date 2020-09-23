@@ -1,0 +1,36 @@
+spring:
+  profiles:
+    active: local
+
+project:
+  root:
+    path: /myprojects/kafka/
+
+service:
+  id: kafka
+
+camel:
+  springboot:
+    main-run-controller: true
+    xmlRoutes: classpath:camel-routes/${service.id}/*.xml
+
+---
+spring:
+  profiles: local
+
+  data:
+    cassandra:
+      keyspace-name: sentence
+      contact-points: 127.0.0.1
+      port: 9042
+      local-datacenter: datacenter1
+
+kafka:
+  server: localhost:9092
+  brokers: localhost:9092
+  topic: word
+  input: ${project.root.path}/input/
+  archive: ${project.root.path}/archive/
+
+wordClient:
+  apiKey: 72A91A6CECF5EFA948118EF2F0EE297F
